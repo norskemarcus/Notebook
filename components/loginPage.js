@@ -2,68 +2,92 @@ import axios from 'axios'; // npm install axios
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TextInput, Text, Pressable } from 'react-native';
 import { Alert } from 'react-native';
-import { apiKey } from '../firebase/config.jsx'; //removed auth
-import { auth } from '../firebase/config.jsx';
+import { apiKey, auth as firebaseAuth } from '../firebase/config.jsx';
+import Icon from 'react-native-vector-icons/FontAwesome';
+//import AppNavigator from '../navigation/appNavigator.js';
 
 const API_KEY = 'AIzaSyA7txWcuaoBoYcSpqTf4l3nKfiiV0C1BYs';
 const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
 
 export default function LoginPage({ navigation }) {
+  // onLogin
   const [email, setEmail] = useState('user@gmail.com');
   const [password, setPassword] = useState('rewrewrew');
+  const [showPassword, setShowPassword] = useState(false);
 
   async function login() {
-    const auth = auth;
+    const auth = firebaseAuth;
+    console.log(auth);
 
     try {
       const response = await axios.post(url + API_KEY, {
-        auth: auth,
         email: email,
         password: password,
         returnSecureToken: true,
-      });
-      Alert.alert('Login successful ', 'token: ' + response.data.idToken.substring(0, 10) + '...');
-      console.log('Login success:', response.data.idToken.substring(0, 10));
-      navigation.navigate('Page1');
+      }); // removed  auth: auth,
+
+      console.log(response.data);
+
+      if (response.data.idToken) {
+        console.log('Login success:', response.data.idToken.substring(0, 10));
+        navigation.navigate('Page1');
+      } else {
+        console.error('Unexpected login response:', response.data);
+      }
     } catch (error) {
-      console.error('Error:', error); // Log the error for debugging
-      Alert.alert('Login failed ', error.message);
+      console.error('Error:', error);
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const signUp = () => {
-    // Navigate to the sign-up screen (signupUser.js)
     navigation.navigate('SignUp');
   };
 
   return (
     <View style={styles.container}>
-      <TextInput
-        value={email}
-        onChangeText={text => setEmail(text)}
-        placeholder='Email'
-        style={styles.textBoxes}
-      />
-      <TextInput
-        value={password}
-        onChangeText={text => setPassword(text)}
-        placeholder='Password'
-        secureTextEntry={true}
-        style={styles.textBoxes}
-      />
-      <Pressable
-        onPress={login}
-        style={styles.loginButton}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
-
+      <View style={styles.formContainer}>
+        <TextInput
+          value={email}
+          onChangeText={text => setEmail(text)}
+          placeholder='Email'
+          style={styles.textBoxes}
+        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            value={password}
+            onChangeText={text => setPassword(text)}
+            placeholder='Password'
+            secureTextEntry={!showPassword}
+            style={styles.passwordInput}
+          />
+          <Pressable
+            onPress={togglePasswordVisibility}
+            style={styles.showPasswordButton}
+          >
+            <Icon
+              name={showPassword ? 'eye-slash' : 'eye'}
+              size={20}
+              color='black'
+            />
+          </Pressable>
+        </View>
+        <Pressable
+          onPress={login}
+          style={styles.loginButton}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      </View>
       <Text style={styles.signupText}>Don't have an account?</Text>
       <Pressable
         onPress={signUp}
         style={styles.signupLink}
       >
-        <Text style={styles.signUpButton}>SignUp</Text>
+        <Text style={styles.signUpButton}>Sign Up</Text>
       </Pressable>
     </View>
   );
@@ -74,31 +98,51 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#f4f4f4', // Background color for the entire page
+  },
+  formContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
   },
   textBoxes: {
-    width: '70%',
-    borderColor: 'gray',
-    borderWidth: 1,
     marginBottom: 20,
-
     fontSize: 18,
     padding: 10,
     borderColor: 'gray',
     borderWidth: 0.2,
     borderRadius: 10,
   },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderColor: 'gray',
+    borderWidth: 0.2,
+    borderRadius: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 18,
+    padding: 10,
+  },
   loginButton: {
     backgroundColor: '#2596be',
     padding: 10,
-    width: '20%',
     borderRadius: 10,
-    marginBottom: 10,
+    marginTop: 10,
+  },
+  showPasswordButton: {
+    padding: 10,
   },
   signUpButton: {
     backgroundColor: '#e28743',
-    padding: 7,
+    padding: 10,
     borderRadius: 10,
-    marginTop: 5,
+    marginTop: 10,
+    textAlign: 'center',
+    color: 'white',
   },
   buttonText: {
     color: 'white',
@@ -106,10 +150,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   signupText: {
-    fontSize: 12,
+    fontSize: 16,
     marginTop: 20,
+    color: 'gray',
   },
   signupLink: {
-    color: 'blue',
+    marginTop: 10,
+    alignSelf: 'center',
   },
 });

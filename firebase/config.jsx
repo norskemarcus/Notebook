@@ -27,6 +27,8 @@ const auth = getAuth(app);
 
 export { auth };
 
+//const apiKey = firebaseConfig.apiKey;
+//export { apiKey };
 
 
 

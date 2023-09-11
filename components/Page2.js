@@ -89,7 +89,7 @@ export default function Page2({ navigation, route }) {
             onChangeText={setContent}
             multiline
           />
-        </View> // multiline = true allows textinput to accept multipile lines of text input
+        </View> // multiline = true allows textinput to accept multiple lines of text input
       ) : (
         <Text style={styles.contentText}>{content}</Text>
       )}

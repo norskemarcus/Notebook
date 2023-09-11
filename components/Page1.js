@@ -2,30 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import { styles } from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-//import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase/config.jsx';
-import { addDoc, collection, where, query, getDocs } from 'firebase/firestore';
+import { auth as firebaseAuth, db } from '../firebase/config.jsx';
+import { addDoc, collection, where, query, getDocs, deleteDoc } from 'firebase/firestore';
 
 export default function Page1({ navigation, route }) {
-  // useState = react native hook, en mekanisme man kan hekte sig på. Lidt som en session.
-  const [titleInput, setTitleInput] = useState(''); // gemme blankt først
+  const [titleInput, setTitleInput] = useState('');
   const [documents, setDocuments] = useState([]);
-  const [userId, setUserId] = useState(null); // Initialize userId in the local state
-  //  userId is defined in the local state and set when the user is authenticated. It will then be available for use in the onPress handler when navigating to Page2.
+  const [userId, setUserId] = useState(null);
 
-  // Use useEffect to fetch documents when the component mounts or user changes
   useEffect(() => {
-    // Check if the user is authenticated
-    const user = auth.currentUser;
-    if (user) {
-      // User is authenticated, fetch and set user's documents
-      setUserId(user.uid); // Set the userId in the local state
-      getDocumentsForCurrentUser(user.uid);
-    } else {
-      // User is not authenticated, handle this case as needed
-      console.log('User is not authenticated');
-    }
+    const unsubscribe = firebaseAuth.onAuthStateChanged(user => {
+      console.log('User:', user);
+
+      if (user) {
+        // User is authenticated, fetch and set user's documents
+        setUserId(user.uid); // Set the userId in the local state
+        getDocumentsForCurrentUser(user.uid);
+      } else {
+        // User is not authenticated, handle this case as needed
+        console.log('User is not authenticated');
+      }
+    });
+
+    return () => {
+      // Unsubscribe from the listener when the component unmounts
+      unsubscribe();
+    };
   }, [route.params?.updatedDocument]); // Dependency on updatedDocument
+
+  // Custom header for Page1 screen
+  /*   useEffect(() => {
+    navigation.setOptions({
+      headerTitle: 'Page 1',
+      headerRight: () => (
+        <Pressable
+          style={styles.logoutButton}
+          onPress={handleLogout}
+        >
+          <Text style={styles.logoutText}>Logout</Text>
+        </Pressable>
+      ),
+    });
+  }, [navigation]);
+ */
+  // ---------------------------------------------------------------------------------------------------
 
   useEffect(() => {
     if (route.params?.updatedDocument) {
@@ -44,10 +64,15 @@ export default function Page1({ navigation, route }) {
 
   const saveDocumentToFirestore = async title => {
     try {
-      const user = auth.currentUser;
+      const user = firebaseAuth.currentUser;
 
       if (user) {
-        const userId = user.uid;
+        user
+          .getIdToken(true) // Pass `true` to force token refresh
+          .then(newIdToken => {
+            userId = newIdToken;
+          });
+
         const notebookDocCollection = collection(db, 'notebook_doc');
 
         await addDoc(notebookDocCollection, {
@@ -62,7 +87,7 @@ export default function Page1({ navigation, route }) {
         // After saving, fetch and update the documents list
         getDocumentsForCurrentUser(userId);
       } else {
-        console.log('User is not authenticated');
+        console.log('User is not authenticated - THIS CODE IS HERE: Page1.js');
       }
     } catch (error) {
       console.error('Error saving document to Firestore:', error);
@@ -85,8 +110,17 @@ export default function Page1({ navigation, route }) {
     }
   };
 
+  /*   const handleLogout = async () => {
+    try {
+      await firebaseAuth.signOut();
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  }; */
+
   return (
-    <View style={[styles.appContainer]}>
+    <View style={styles.appContainer}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
@@ -117,7 +151,7 @@ export default function Page1({ navigation, route }) {
                 navigation.navigate('Page2', {
                   document: doc,
                   documentId: doc.id,
-                  userId: userId, // Pass userId to Page2
+                  userId: userId,
                 })
               }
             >
