@@ -158,7 +158,18 @@ export default function Page1({ navigation, route }) {
         renderItem={({ item }) => (
           <View style={styles.goalItem}>
             <View style={styles.goalContent}>
-              <Text style={styles.goalText}>{item.title}</Text>
+              <Text
+                style={styles.goalText}
+                onPress={() => {
+                  navigation.navigate('Page2', {
+                    document: item,
+                    documentId: item.id,
+                    userId: userId,
+                  });
+                }}
+              >
+                {item.title}
+              </Text>
               <Pressable onPress={() => deleteDocument(item.id)}>
                 <Icon
                   name='trash'
