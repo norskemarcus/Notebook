@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView, FlatList } from 'react-native';
 import { styles } from '../styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth as firebaseAuth, db } from '../firebase/config.jsx';
-import { addDoc, collection, where, query, getDocs, deleteDoc } from 'firebase/firestore';
+import { addDoc, collection, where, query, getDocs, deleteDoc, doc } from 'firebase/firestore';
+// import { AsyncStorage } from '@react-native-async-storage/async-storage';
+// OBS npm install @react-native-async-storage/async-storage
 
 export default function Page1({ navigation, route }) {
   const [titleInput, setTitleInput] = useState('');
@@ -12,8 +14,6 @@ export default function Page1({ navigation, route }) {
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(user => {
-      console.log('User:', user);
-
       if (user) {
         // User is authenticated, fetch and set user's documents
         setUserId(user.uid); // Set the userId in the local state
@@ -28,10 +28,10 @@ export default function Page1({ navigation, route }) {
       // Unsubscribe from the listener when the component unmounts
       unsubscribe();
     };
-  }, [route.params?.updatedDocument]); // Dependency on updatedDocument
+  }, [route.params?.updatedDocument, userId]); // Dependency on updatedDocument  and userId
 
   // Custom header for Page1 screen
-  /*   useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: 'Page 1',
       headerRight: () => (
@@ -44,7 +44,7 @@ export default function Page1({ navigation, route }) {
       ),
     });
   }, [navigation]);
- */
+
   // ---------------------------------------------------------------------------------------------------
 
   useEffect(() => {
@@ -67,16 +67,16 @@ export default function Page1({ navigation, route }) {
       const user = firebaseAuth.currentUser;
 
       if (user) {
-        user
+        /*  user
           .getIdToken(true) // Pass `true` to force token refresh
           .then(newIdToken => {
-            userId = newIdToken;
+            setUserId(newIdToken); // Use setUserId to update the state variable
           });
-
+ */
         const notebookDocCollection = collection(db, 'notebook_doc');
 
         await addDoc(notebookDocCollection, {
-          userId: userId,
+          userId: user.uid,
           title: title,
           content: '',
           createdAt: new Date().toISOString(),
@@ -85,9 +85,9 @@ export default function Page1({ navigation, route }) {
         console.log('Document saved to Firestore successfully.');
 
         // After saving, fetch and update the documents list
-        getDocumentsForCurrentUser(userId);
+        getDocumentsForCurrentUser(user.uid);
       } else {
-        console.log('User is not authenticated - THIS CODE IS HERE: Page1.js');
+        console.log('User is not authenticated');
       }
     } catch (error) {
       console.error('Error saving document to Firestore:', error);
@@ -110,14 +110,28 @@ export default function Page1({ navigation, route }) {
     }
   };
 
-  /*   const handleLogout = async () => {
+  const handleLogout = async () => {
     try {
       await firebaseAuth.signOut();
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error logging out:', error);
     }
-  }; */
+  };
+
+  async function deleteDocument(id) {
+    try {
+      const docRef = doc(db, 'notebook_doc', id);
+      await deleteDoc(docRef);
+
+      // Update the local documents list after deletion
+      // setDocuments(prevDocuments => prevDocuments.filter(doc => doc.id !== id));
+      getDocumentsForCurrentUser(userId);
+      console.log(`Document with ID ${id} deleted successfully.`);
+    } catch (error) {
+      console.error(`Error deleting document with ID ${id}:`, error);
+    }
+  }
 
   return (
     <View style={styles.appContainer}>
@@ -139,27 +153,24 @@ export default function Page1({ navigation, route }) {
           />
         </Pressable>
       </View>
-      <ScrollView style={styles.goalsContainer}>
-        {documents.map(doc => (
-          <View
-            style={styles.goalItem}
-            key={doc.title}
-          >
-            <Text
-              style={styles.goalText}
-              onPress={() =>
-                navigation.navigate('Page2', {
-                  document: doc,
-                  documentId: doc.id,
-                  userId: userId,
-                })
-              }
-            >
-              {doc.title}
-            </Text>
+      <FlatList
+        data={documents}
+        renderItem={({ item }) => (
+          <View style={styles.goalItem}>
+            <View style={styles.goalContent}>
+              <Text style={styles.goalText}>{item.title}</Text>
+              <Pressable onPress={() => deleteDocument(item.id)}>
+                <Icon
+                  name='trash'
+                  size={24}
+                  color='#FF6B6B'
+                />
+              </Pressable>
+            </View>
           </View>
-        ))}
-      </ScrollView>
+        )}
+        keyExtractor={item => item.id}
+      />
     </View>
   );
 }

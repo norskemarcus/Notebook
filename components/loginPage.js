@@ -4,7 +4,7 @@ import { StyleSheet, View, TextInput, Text, Pressable } from 'react-native';
 import { Alert } from 'react-native';
 import { apiKey, auth as firebaseAuth } from '../firebase/config.jsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
-//import AppNavigator from '../navigation/appNavigator.js';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 const API_KEY = 'AIzaSyA7txWcuaoBoYcSpqTf4l3nKfiiV0C1BYs';
 const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
@@ -16,23 +16,24 @@ export default function LoginPage({ navigation }) {
   const [showPassword, setShowPassword] = useState(false);
 
   async function login() {
-    const auth = firebaseAuth;
-    console.log(auth);
+    const auth = getAuth;
 
     try {
-      const response = await axios.post(url + API_KEY, {
+      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      /* const response = await axios.post(url + API_KEY, {
         email: email,
         password: password,
         returnSecureToken: true,
-      }); // removed  auth: auth,
+      }); */
+      // response.data.idToken
+      if (user) {
+        console.log('Login success:', user);
 
-      console.log(response.data);
-
-      if (response.data.idToken) {
-        console.log('Login success:', response.data.idToken.substring(0, 10));
-        navigation.navigate('Page1');
+        navigation.navigate('Page1', { userId: user.uid });
       } else {
-        console.error('Unexpected login response:', response.data);
+        console.error('Unexpected login response:', user);
       }
     } catch (error) {
       console.error('Error:', error);

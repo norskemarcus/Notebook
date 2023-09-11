@@ -115,6 +115,11 @@ export const styles = StyleSheet.create({
     color: '#393c39',
     fontSize: 16,
   },
+  goalContent: {
+    flexDirection: 'row', // Add this property to display title and delete icon horizontally
+    justifyContent: 'space-between', // Optional: to align them at the ends
+    alignItems: 'center', // Optional: to vertically align them
+  },
   logoutContainer: {
     flex: 1,
     justifyContent: 'center',
