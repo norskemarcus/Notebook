@@ -36,26 +36,22 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ececec',
     paddingHorizontal: 16,
-    width: '100%', // This was not here
+    width: '100%',
   },
-
   titleInput: {
-    flex: 1, // This was not here
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10, // 5
-    marginTop: 5, // This was not here
-    marginLeft: 5, // This was not here
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: '#ececec',
     borderRadius: 6,
     padding: 10,
-    backgroundColor: 'transparent', // This was not here
+    backgroundColor: 'transparent',
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'start', // Center content vertically
+    justifyContent: 'start',
     paddingHorizontal: 16,
   },
   contentInput: {
@@ -65,7 +61,7 @@ export const styles = StyleSheet.create({
     borderColor: '#ececec',
     borderRadius: 6,
     padding: 10,
-    backgroundColor: '#ffffff', // This was not here
+    backgroundColor: '#ffffff',
   },
 
   textInput: {
@@ -80,7 +76,7 @@ export const styles = StyleSheet.create({
   },
   inputRow: {
     flexDirection: 'row',
-    justifyContent: 'center', // Center the input row horizontally
+    justifyContent: 'center',
   },
   contentText: {
     fontSize: 16,
@@ -112,9 +108,6 @@ export const styles = StyleSheet.create({
   },
   plusButton: {
     backgroundColor: 'transparent',
-    // padding: 20,
-    //borderRadius: 6,
-    //marginRight: 40, // Add margin to separate the input field and the icon
   },
   goalsContainer: {
     marginTop: 20,
@@ -133,9 +126,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
   },
   goalContent: {
-    flexDirection: 'row', // Add this property to display title and delete icon horizontally
-    justifyContent: 'space-between', // Optional: to align them at the ends
-    alignItems: 'center', // Optional: to vertically align them
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   logoutContainer: {
     flex: 1,

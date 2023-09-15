@@ -69,6 +69,61 @@ export default function Page2({ navigation, route }) {
         </View>
       </View>
 
+      <View style={styles.contentContainer}>
+        {isEditMode && (
+          <View>
+            <TextInput
+              style={styles.titleInput}
+              value={title}
+              onChangeText={setTitle}
+            />
+            <TextInput
+              style={styles.contentInput}
+              value={content}
+              onChangeText={setContent}
+              multiline
+            />
+            <View style={styles.editButtonsContainer}>
+              <Pressable
+                onPress={handleSaveChanges}
+                style={styles.saveButton}
+              >
+                <Text style={styles.buttonText}>Save Changes</Text>
+              </Pressable>
+              <Pressable
+                onPress={handleCancelEdit}
+                style={styles.cancelButton}
+              >
+                <Text style={styles.buttonText}>Cancel</Text>
+              </Pressable>
+            </View>
+          </View>
+        )}
+        {!isEditMode && <Text style={[styles.contentText, styles.centerContentText]}>{content}</Text>}
+      </View>
+    </View>
+  );
+}
+
+/* 
+  return (
+    <View style={styles.appContainer}>
+      <View style={styles.headerContainer}>
+        <Pressable
+          onPress={handleEdit}
+          style={styles.editIcon}
+        >
+          <Icon
+            name='edit'
+            size={24}
+            color='#3079d1'
+          />
+        </Pressable>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>{title}</Text>
+        </View>
+      </View>
+
       {isEditMode ? (
         <View>
           <TextInput
@@ -108,3 +163,4 @@ export default function Page2({ navigation, route }) {
     </View>
   );
 }
+ */
