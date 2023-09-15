@@ -48,6 +48,52 @@ export default function LoginPage({ navigation }) {
     navigation.navigate('SignUp');
   };
 
+  /* return (
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <TextInput
+          value={email}
+          onChangeText={text => setEmail(text)}
+          placeholder='Email'
+          style={styles.textBoxes}
+        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            value={password}
+            onChangeText={text => setPassword(text)}
+            placeholder='Password'
+            secureTextEntry={!showPassword}
+            style={styles.passwordInput}
+          />
+          <Pressable
+            onPress={togglePasswordVisibility}
+            style={styles.showPasswordButton}
+          >
+            <Icon
+              name={showPassword ? 'eye-slash' : 'eye'}
+              size={20}
+              color='black'
+            />
+          </Pressable>
+        </View>
+        <Pressable
+          onPress={login}
+          style={styles.loginButton}
+        >
+          <Text style={styles.buttonText}>Login</Text>
+        </Pressable>
+      </View>
+      <Text style={styles.signupText}>Don't have an account?</Text>
+      <Pressable
+        onPress={signUp}
+        style={styles.signupLink}
+      >
+        <Text style={styles.signUpButton}>Sign Up</Text>
+      </Pressable>
+    </View>
+  );
+}
+ */
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
@@ -99,7 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f4f4f4', // Background color for the entire page
+    backgroundColor: '#f4f4f4',
   },
   formContainer: {
     backgroundColor: 'white',
@@ -118,6 +164,7 @@ const styles = StyleSheet.create({
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between', // Added to create space between input and icon
     marginBottom: 20,
     borderColor: 'gray',
     borderWidth: 0.2,
@@ -127,6 +174,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     padding: 10,
+    paddingRight: 0,
   },
   loginButton: {
     backgroundColor: '#2596be',

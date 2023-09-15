@@ -10,13 +10,14 @@ import Page1 from './components/Page1.js';
 
 const Stack = createNativeStackNavigator();
 
+//     options={{ title: 'Login' }}
+
 const AppNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name='Login'
         component={LoginPage}
-        options={{ title: 'Login' }}
       />
       <Stack.Screen
         name='SignUp'
@@ -26,7 +27,7 @@ const AppNavigator = () => {
       <Stack.Screen
         name='Page1'
         component={Page1}
-        options={{ title: 'Page1' }}
+        options={{ title: 'Back' }}
       />
     </Stack.Navigator>
   );

@@ -17,24 +17,6 @@ export default function App() {
   // Track user login state
   const [user, setUser] = React.useState(null);
   const [documents, setDocuments] = useState([]);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  /*  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, user => {
-      if (user) {
-        // User is signed in
-        setUser(user);
-      } else {
-        // User is signed out
-        setUser(null);
-      }
-    });
-
-    return () => {
-      // Unsubscribe from the listener when the component unmounts
-      unsubscribe();
-    };
-  }, []); */
 
   // Function to set the user after successful login
   const handleLogin = loggedInUser => {
@@ -45,8 +27,7 @@ export default function App() {
   const [currentNote, setCurrentNote] = useState({ title: '', content: '' });
 
   const handleLogout = () => {
-    // Implement your logout logic here
-    setIsLoggedIn(false); // Update the isLoggedIn state when logging out
+    setIsLoggedIn(false);
   };
 
   const handleSaveNote = updatedNote => {
@@ -58,7 +39,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen
           name='Login'
-          options={{ title: 'Login' }}
+          options={{ title: 'The Note App' }}
         >
           {props => (
             <LoginPage
@@ -76,7 +57,7 @@ export default function App() {
         <Stack.Screen
           name='Page1'
           component={Page1}
-          options={{ title: 'Page1' }}
+          options={{ title: 'Back' }}
         />
         <Stack.Screen
           name='Page2'

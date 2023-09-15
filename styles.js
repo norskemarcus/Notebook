@@ -2,12 +2,11 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   appContainer: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: '#ffffff',
     paddingTop: 50,
     paddingHorizontal: 16,
     justifyContent: 'space-between',
-    marginBottom: 50,
   },
   headerContainer: {
     flexDirection: 'row',
@@ -30,23 +29,34 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 24, //20
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: 'transparent',
     borderBottomWidth: 1,
     borderBottomColor: '#ececec',
     paddingHorizontal: 16,
+    width: '100%', // This was not here
   },
+
   titleInput: {
-    fontSize: 24,
+    flex: 1, // This was not here
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 10, // 5
+    marginTop: 5, // This was not here
+    marginLeft: 5, // This was not here
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: '#ececec',
     borderRadius: 6,
     padding: 10,
+    backgroundColor: 'transparent', // This was not here
+  },
+  contentContainer: {
+    flex: 1,
+    justifyContent: 'start', // Center content vertically
+    paddingHorizontal: 16,
   },
   contentInput: {
     fontSize: 16,
@@ -55,16 +65,22 @@ export const styles = StyleSheet.create({
     borderColor: '#ececec',
     borderRadius: 6,
     padding: 10,
+    backgroundColor: '#ffffff', // This was not here
   },
+
   textInput: {
     borderWidth: 1,
     borderColor: '#393c39',
-    width: '70%',
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 6,
     marginRight: 8,
     fontSize: 16,
+    width: '60%',
+  },
+  inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'center', // Center the input row horizontally
   },
   contentText: {
     fontSize: 16,
@@ -83,24 +99,25 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   cancelButton: {
-    backgroundColor: '#FF6B6B',
+    backgroundColor: 'grey',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 6,
     marginHorizontal: 10,
   },
   buttonText: {
-    color: 'white',
+    color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
   },
   plusButton: {
-    backgroundColor: '#f9f9f9',
-    padding: 20,
+    backgroundColor: 'transparent',
+    // padding: 20,
+    //borderRadius: 6,
+    //marginRight: 40, // Add margin to separate the input field and the icon
   },
   goalsContainer: {
     marginTop: 20,
-    // MORE HERE??
   },
   goalItem: {
     marginVertical: 8,

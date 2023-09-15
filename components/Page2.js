@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable } from 'react-native';
+import { View, Text, TextInput, Pressable, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '../styles';
 import { db } from '../firebase/config.jsx';
@@ -13,9 +13,6 @@ export default function Page2({ navigation, route }) {
   const [content, setContent] = useState(document?.content || '');
   const [isEditMode, setIsEditMode] = useState(false);
   const [initialTitle, setInitialTitle] = useState(document?.title || '');
-
-  // Hvor bliver dette brugt?
-  const [reply, setReply] = useState('Empty');
 
   useEffect(() => {
     if (document) {
@@ -32,7 +29,7 @@ export default function Page2({ navigation, route }) {
     setIsEditMode(false);
 
     const documentData = {
-      userId: userId, // documentId
+      userId: userId,
       title: title,
       content: content,
       createdAt: new Date().toISOString(), // // Convert Date to a serializable string
@@ -42,13 +39,9 @@ export default function Page2({ navigation, route }) {
     const notebookDocRef = doc(db, 'notebook_doc', documentId);
 
     if (document) {
-      // document.title = title;
-      //document.content = content;
-      // Update the document in Firestore using its ID
       await updateDoc(notebookDocRef, documentData);
     }
-
-    //navigation.navigate({ name: 'Page1', params: { updatedDocument: documentData } });
+    // måske unødvendig at sende data
     navigation.navigate('Page1', {
       updatedDocument: { id: documentId, ...documentData }, // Exclude createdAt, resolve problem of non-serializable values in the navigation state.
     });
@@ -89,9 +82,11 @@ export default function Page2({ navigation, route }) {
             onChangeText={setContent}
             multiline
           />
-        </View> // multiline = true allows textinput to accept multiple lines of text input
+        </View>
       ) : (
-        <Text style={styles.contentText}>{content}</Text>
+        <View style={styles.contentContainer}>
+          <Text style={[styles.contentText, styles.centerContentText]}>{content}</Text>
+        </View>
       )}
 
       {isEditMode && (

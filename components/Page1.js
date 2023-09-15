@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, FlatList } from 'react-native';
-import { styles } from '../styles';
+import { View, Text, TextInput, Pressable, ScrollView, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { styles } from '../styles.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth as firebaseAuth, db } from '../firebase/config.jsx';
 import { addDoc, collection, where, query, getDocs, deleteDoc, doc } from 'firebase/firestore';
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 // OBS npm install @react-native-async-storage/async-storage
+
+const { width, height } = Dimensions.get('window'); // Get the dimensions of the window
 
 export default function Page1({ navigation, route }) {
   const [titleInput, setTitleInput] = useState('');
@@ -133,50 +135,57 @@ export default function Page1({ navigation, route }) {
     }
   }
 
+  // Dimensions on iphone SE = 375 x 667
+
   return (
-    <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.textInput}
-          value={titleInput}
-          placeholder='Enter document title'
-          onChangeText={setTitleInput}
-        />
-        <Pressable
-          style={styles.plusButton}
-          onPress={addDocument}
-        >
-          <Icon
-            name='plus'
-            size={24}
-            color='#3079d1'
+    <View style={{ ...styles.appContainer, width, height }}>
+      <View style={styles.inputRow}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.titleInput}
+            value={titleInput}
+            placeholder='Enter document title'
+            onChangeText={setTitleInput}
           />
-        </Pressable>
+          <Pressable
+            style={styles.plusButton}
+            onPress={addDocument}
+          >
+            <Icon
+              name='plus'
+              size={24}
+              color='#393c39'
+            />
+          </Pressable>
+        </View>
       </View>
+
       <FlatList
         data={documents}
         renderItem={({ item }) => (
-          <View style={styles.goalItem}>
-            <View style={styles.goalContent}>
-              <Text
-                style={styles.goalText}
-                onPress={() => {
-                  navigation.navigate('Page2', {
-                    document: item,
-                    documentId: item.id,
-                    userId: userId,
-                  });
-                }}
-              >
-                {item.title}
-              </Text>
-              <Pressable onPress={() => deleteDocument(item.id)}>
-                <Icon
-                  name='trash'
-                  size={24}
-                  color='#FF6B6B'
-                />
-              </Pressable>
+          <View>
+            <View style={styles.goalItem}>
+              <View style={styles.goalContent}>
+                <Text
+                  style={styles.goalText}
+                  onPress={() => {
+                    navigation.navigate('Page2', {
+                      document: item,
+                      documentId: item.id,
+                      userId: userId,
+                    });
+                  }}
+                >
+                  {item.title}
+                </Text>
+                <Pressable onPress={() => deleteDocument(item.id)}>
+                  <Icon
+                    name='trash'
+                    size={24}
+                    color='#FF6B6B'
+                  />
+                </Pressable>
+              </View>
             </View>
           </View>
         )}
