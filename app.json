@@ -2,6 +2,7 @@
   "expo": {
     "name": "UdemyCourse1",
     "slug": "UdemyCourse1",
+    "plugins": [["expo-image-picker"]],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,11 +12,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "We need access to your camera to pick images.",
+        "NSPhotoLibraryUsageDescription": "We need access to your photo library to pick images."
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -26,7 +29,6 @@
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
-
     }
   }
 }

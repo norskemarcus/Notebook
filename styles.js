@@ -150,4 +150,42 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    justifyContent: 'center',
+  },
+  selectButton: {
+    borderRadius: 5,
+    width: 150,
+    height: 50,
+    backgroundColor: '#4e7ecc',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonText: {
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  uploadButton: {
+    borderRadius: 5,
+    width: 150,
+    height: 50,
+    backgroundColor: '#50a182',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  imageContainer: {
+    marginTop: 30,
+    marginBottom: 5,
+    alignItems: 'center',
+  },
+  centeredImage: {
+    width: '100%', // Occupy the full width of the container
+    aspectRatio: 1, // Preserve the aspect ratio (1:1 for square images)
+    resizeMode: 'contain', // Maintain the image's aspect ratio and fit it within the container
+  },
 });

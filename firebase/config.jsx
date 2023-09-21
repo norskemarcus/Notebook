@@ -2,6 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 // lite = CRUD, smaller in size
+// import 'firebase/compat/storage'
+import { getStorage } from 'firebase/storage';
+
+//import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+//import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -21,7 +27,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize firestore
-export const db = getFirestore(app);
+const db = getFirestore(app);
+
+const storage = getStorage(app)
 
 const auth = getAuth(app);
 
@@ -30,5 +38,5 @@ export { auth };
 //const apiKey = firebaseConfig.apiKey;
 //export { apiKey };
 
-
+export {app, db, storage}
 

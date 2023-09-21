@@ -48,52 +48,7 @@ export default function LoginPage({ navigation }) {
     navigation.navigate('SignUp');
   };
 
-  /* return (
-    <View style={styles.container}>
-      <View style={styles.formContainer}>
-        <TextInput
-          value={email}
-          onChangeText={text => setEmail(text)}
-          placeholder='Email'
-          style={styles.textBoxes}
-        />
-        <View style={styles.passwordContainer}>
-          <TextInput
-            value={password}
-            onChangeText={text => setPassword(text)}
-            placeholder='Password'
-            secureTextEntry={!showPassword}
-            style={styles.passwordInput}
-          />
-          <Pressable
-            onPress={togglePasswordVisibility}
-            style={styles.showPasswordButton}
-          >
-            <Icon
-              name={showPassword ? 'eye-slash' : 'eye'}
-              size={20}
-              color='black'
-            />
-          </Pressable>
-        </View>
-        <Pressable
-          onPress={login}
-          style={styles.loginButton}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </Pressable>
-      </View>
-      <Text style={styles.signupText}>Don't have an account?</Text>
-      <Pressable
-        onPress={signUp}
-        style={styles.signupLink}
-      >
-        <Text style={styles.signUpButton}>Sign Up</Text>
-      </Pressable>
-    </View>
-  );
-}
- */
+  
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>

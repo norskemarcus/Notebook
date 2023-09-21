@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, ScrollView, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, TextInput, Pressable, FlatList, Dimensions } from 'react-native';
 import { styles } from '../styles.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { auth as firebaseAuth, db } from '../firebase/config.jsx';

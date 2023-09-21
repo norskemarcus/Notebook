@@ -8,8 +8,12 @@ import SignUp from './components/signupPage.js';
 //import AppNavigator from '../navigation/appNavigator.js';
 import Page1 from './components/Page1.js';
 import Page2 from './components/Page2.js';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase/config.jsx';
+import UploadScreen from './components/uploadScreen.js';
+import { ref, uploadBytes } from 'firebase/storage';
+//import { onAuthStateChanged } from 'firebase/auth';
+import { auth, storage } from './firebase/config.jsx';
+import { useCollection } from 'react-firebase-hooks/firestore';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +37,8 @@ export default function App() {
   const handleSaveNote = updatedNote => {
     setCurrentNote(updatedNote);
   };
+
+  // Han bruger <UploadMediaFile /> inde i en View
 
   return (
     <NavigationContainer>
@@ -63,6 +69,11 @@ export default function App() {
           name='Page2'
           component={Page2}
           options={{ title: 'Page2' }}
+        />
+        <Stack.Screen
+          name='UploadScreen'
+          component={UploadScreen}
+          options={{ title: 'Upload Screen' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

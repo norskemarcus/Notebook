@@ -1,0 +1,70 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+header {
+  background-color: #0bb66f;
+  color: white;
+  text-align: center;
+  padding: 10px;
+}
+
+/* Main container for sidebar and content */
+.container {
+  display: flex;
+}
+
+/* Sidebar styles */
+aside {
+  width: 20%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  display: flex; 
+  flex-direction: column; /* Stack children vertically */
+  height: 100%; /* Fill entire height of the container */
+}
+
+aside h2 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.dropdown {
+  list-style: none;
+  cursor: pointer;
+}
+
+.dropdown span {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.submenu {
+  display: none;
+  list-style: none;
+  margin-left: 20px;
+}
+
+/* Main content styles */
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+
+
+/* Responsive styles */
+@media screen and (max-width: 768px) {
+  .container {
+      flex-direction: column;
+  }
+
+  aside {
+      width: 100%;
+  }
+}
