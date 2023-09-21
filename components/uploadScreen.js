@@ -84,12 +84,12 @@ const UploadScreen = ({ route }) => {
 
             console.log('Image uploaded');
 
-            //navigation.navigate('Page2' , { documentId: documentId, imageURL: downloadURL });
-            
+            navigation.navigate('Page2' , { documentId: documentId, imageURL: downloadURL });
+           /*  
             navigation.reset({
               index: 0,
               routes: [{ name: 'Page2', params: { documentId: documentId, imageURL: downloadURL } }],
-            });
+            }); */
 
           } catch (error) {
             console.error('Error getting download URL:', error);

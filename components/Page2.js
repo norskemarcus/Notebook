@@ -3,9 +3,10 @@ import { View, Text, TextInput, Pressable, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '../styles';
 import { db, storage } from '../firebase/config.jsx';
-
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 export default function Page2({ navigation, route }) {
   const [document] = useState(route.params?.document || {});
@@ -15,6 +16,7 @@ export default function Page2({ navigation, route }) {
   const [isEditMode, setIsEditMode] = useState(false);
   const [initialTitle, setInitialTitle] = useState(document?.title || '');
   const [imageURL, setImageURL] = useState(null);
+  const [forceRender, setForceRender] = useState(false);
 
   useEffect(() => {
     if (document) {
@@ -22,7 +24,30 @@ export default function Page2({ navigation, route }) {
       setContent(document.content);
       retrieveImageURL();
     }
-    
+  }, [document]);
+
+  useEffect(() => {
+    if (imageURL) {
+      setForceRender(!forceRender); // Toggle the dummy state to trigger a re-render
+    }
+  }, [imageURL]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reload the data when the screen is focused
+      if (document) {
+        setTitle(document.title);
+        setContent(document.content);
+        retrieveImageURL();
+      }
+    }, [document])
+  );
+  
+
+
+
+
+
     async function retrieveImageURL() {
       try {
         const notebookDocRef = doc(db, 'notebook_doc', documentId);
@@ -56,7 +81,7 @@ export default function Page2({ navigation, route }) {
         console.error('Error checking for image:', error);
       }
     }
-  }, [document, documentId]);
+ 
 
   const renderImage = () => {
     if (imageURL) {
