@@ -82,15 +82,14 @@ const UploadScreen = ({ route }) => {
 
             await updateDoc(notebookDocRef, documentData);
 
-            // Try to send the imageURL back to 'Page2'
-            // navigation.setOptions({
-            //   screenName: 'Page2',
-            //   params: { uploadedImage: downloadURL },
-            // });
-
             console.log('Image uploaded');
 
-            navigation.navigate('Page2', { uploadedImage: downloadURL });
+            //navigation.navigate('Page2' , { documentId: documentId, imageURL: downloadURL });
+            
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'Page2', params: { documentId: documentId, imageURL: downloadURL } }],
+            });
 
           } catch (error) {
             console.error('Error getting download URL:', error);
@@ -183,7 +182,7 @@ const UploadScreen = ({ route }) => {
         {image && (
           <Image
             source={{ uri: image }}
-            style={{ width: 300, height: 300 }}
+            style={styles.centeredImage}
           />
         )}
         <Pressable
