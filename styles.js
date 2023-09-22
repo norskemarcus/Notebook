@@ -105,13 +105,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: 'black',
     fontSize: 16,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    color: 'red',
-    fontSize: 16,
-    marginTop: 10,
-    
+    fontWeight: 'bold',  
   },
   plusButton: {
     backgroundColor: 'transparent',
@@ -216,5 +210,9 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 8,
     color: '#50a182', // Text color for the "Add an image" text
+  },
+  changePictureButton: {
+    backgroundColor: 'transparent', 
+    padding: 5, 
   },
 });

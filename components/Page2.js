@@ -16,6 +16,8 @@ export default function Page2({ navigation, route }) {
   const [initialTitle, setInitialTitle] = useState(document?.title || '');
   const [imageURL, setImageURL] = useState(null);
   const [forceRender, setForceRender] = useState(false);
+  //const [isImageAvailable, setIsImageAvailable] = useState(false);   // state variable to track whether an image is available
+
 
   useEffect(() => {
     if (document) {
@@ -42,6 +44,8 @@ export default function Page2({ navigation, route }) {
     }, [document])
   );
 
+
+
   async function retrieveImageURL() {
     try {
       const notebookDocRef = doc(db, 'notebook_doc', documentId);
@@ -50,6 +54,7 @@ export default function Page2({ navigation, route }) {
       if (docSnapshot.exists()) {
         const imageURL = docSnapshot.data().imageURL;
         setImageURL(imageURL);
+        //setIsImageAvailable(true); 
       } else {
         // If no document exists, check for an existing image
         checkImageInStorage();
@@ -68,8 +73,10 @@ export default function Page2({ navigation, route }) {
       if (metadata.size > 0) {
         const fullImageURL = await getDownloadURL(ref(storageRef, imagePath));
         setImageURL(fullImageURL);
+        //setIsImageAvailable(true);
       } else {
         setImageURL(null);
+       // setIsImageAvailable(false); 
       }
     } catch (error) {
       console.error('Error checking for image:', error);
@@ -131,6 +138,28 @@ export default function Page2({ navigation, route }) {
     setTitle(initialTitle);
   };
 
+
+  const handleDeleteImage = async () => {
+    try {
+      const storageRef = storage;
+      const imagePath = `images/${documentId}.jpg`;
+  
+      // Delete the image from Firebase Storage
+      await storageRef.deleteObject(imagePath);
+  
+      // Update Firestore to remove the image URL
+      const notebookDocRef = doc(db, 'notebook_doc', documentId);
+      await updateDoc(notebookDocRef, { imageURL: null });
+  
+      setImageURL(null);
+  
+    
+      console.log('Image deleted successfully.');
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.appContainer}>
       <View style={styles.headerContainer}>
@@ -147,6 +176,14 @@ export default function Page2({ navigation, route }) {
             color='#3079d1'
           />
         </Pressable>
+     
+      <Pressable
+        onPress={goToImageUpload}
+        style={styles.changePictureButton}
+      >
+        <Icon name="camera" size={20} color="white" />
+      </Pressable>
+    
       </View>
 
       <View style={styles.contentContainer}>
@@ -184,16 +221,19 @@ export default function Page2({ navigation, route }) {
             <Text style={[styles.contentText, styles.centerContentText]}>{content}</Text>
           </ScrollView>
         )}
-        <View style={styles.imageContainer}>
-          {renderImage()}
+     <View style={styles.imageContainer}>
+        {renderImage()}
+        {imageURL && (
           <Pressable
-            onPress={goToImageUpload}
-            style={styles.changePictureButton} 
+            onPress={handleDeleteImage}
+            style={styles.deleteImageButton}
           >
-            <Icon name="camera" size={20} color="white" /> 
+            <Icon name="trash" size={20} color="#fff" /> 
           </Pressable>
-        </View>
+        )}
       </View>
-    </ScrollView>
-  );
+    </View>
+  </ScrollView>
+);
+        
 }
