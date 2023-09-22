@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingTop: 50,
     paddingHorizontal: 16,
-    justifyContent: 'space-between',
+   // justifyContent: 'space-between',
   },
   headerContainer: {
     flexDirection: 'row', 
@@ -23,7 +23,8 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginLeft: 18,
+    marginRight: 10
   },
   inputContainer: {
     flexDirection: 'row',
@@ -51,7 +52,7 @@ export const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    justifyContent: 'start',
+    justifyContent: 'flex-start',
     paddingHorizontal: 16,
   },
   contentInput: {
@@ -105,6 +106,12 @@ export const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    marginTop: 10,
+    
   },
   plusButton: {
     backgroundColor: 'transparent',
@@ -169,6 +176,11 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  uploadedImage: {
+    width: 200, // Adjust the width as needed
+    height: 300, // Adjust the height as needed
+    resizeMode: 'contain', // You can change the resizeMode as per your requirements
+  },
   uploadButton: {
     borderRadius: 5,
     width: 150,
@@ -187,5 +199,22 @@ export const styles = StyleSheet.create({
     width: '100%', // Occupy the full width of the container
     aspectRatio: 1, // Preserve the aspect ratio (1:1 for square images)
     resizeMode: 'contain', // Maintain the image's aspect ratio and fit it within the container
+  },
+  imagePlaceholder: {
+    width: '100%',
+    aspectRatio: 1,
+    backgroundColor: '#f0f0f0', // Background color for the placeholder
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#e0e0e0', // Border color for the placeholder
+    marginTop: 20,
+  },
+  
+  imagePlaceholderText: {
+    fontSize: 16,
+    marginTop: 8,
+    color: '#50a182', // Text color for the "Add an image" text
   },
 });

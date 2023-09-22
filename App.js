@@ -12,9 +12,15 @@ import UploadScreen from './components/uploadScreen.js';
 import { ref, uploadBytes } from 'firebase/storage';
 //import { onAuthStateChanged } from 'firebase/auth';
 import { auth, storage } from './firebase/config.jsx';
+// @react-native-async-storage/async-storage
 import { useCollection } from 'react-firebase-hooks/firestore';
+//import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 
-
+/* import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+});
+ */
 const Stack = createNativeStackNavigator();
 
 export default function App() {

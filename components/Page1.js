@@ -7,24 +7,24 @@ import { addDoc, collection, where, query, getDocs, deleteDoc, doc } from 'fireb
 // import { AsyncStorage } from '@react-native-async-storage/async-storage';
 // OBS npm install @react-native-async-storage/async-storage
 
-const { width, height } = Dimensions.get('window'); // Get the dimensions of the window
+const { width, height } = Dimensions.get('window'); 
 
 export default function Page1({ navigation, route }) {
   const [titleInput, setTitleInput] = useState('');
   const [documents, setDocuments] = useState([]);
   const [userId, setUserId] = useState(null);
 
+
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(user => {
       if (user) {
-        // User is authenticated, fetch and set user's documents
-        setUserId(user.uid); // Set the userId in the local state
+        setUserId(user.uid); 
         getDocumentsForCurrentUser(user.uid);
       } else {
-        // User is not authenticated, handle this case as needed
         console.log('User is not authenticated');
       }
     });
+
 
     return () => {
       // Unsubscribe from the listener when the component unmounts
@@ -32,7 +32,7 @@ export default function Page1({ navigation, route }) {
     };
   }, [route.params?.updatedDocument, userId]); // Dependency on updatedDocument  and userId
 
-  // Custom header for Page1 screen
+  
   useEffect(() => {
     navigation.setOptions({
       headerTitle: 'Page 1',
@@ -41,13 +41,17 @@ export default function Page1({ navigation, route }) {
           style={styles.logoutButton}
           onPress={handleLogout}
         >
-          <Text style={styles.logoutText}>Logout</Text>
+            <Icon
+              name='sign-out'
+              size={15}
+              color='white'
+            />
         </Pressable>
       ),
     });
   }, [navigation]);
 
-  // ---------------------------------------------------------------------------------------------------
+
 
   useEffect(() => {
     if (route.params?.updatedDocument) {
@@ -69,12 +73,7 @@ export default function Page1({ navigation, route }) {
       const user = firebaseAuth.currentUser;
 
       if (user) {
-        /*  user
-          .getIdToken(true) // Pass `true` to force token refresh
-          .then(newIdToken => {
-            setUserId(newIdToken); // Use setUserId to update the state variable
-          });
- */
+       
         const notebookDocCollection = collection(db, 'notebook_doc');
 
         await addDoc(notebookDocCollection, {
@@ -126,16 +125,12 @@ export default function Page1({ navigation, route }) {
       const docRef = doc(db, 'notebook_doc', id);
       await deleteDoc(docRef);
 
-      // Update the local documents list after deletion
-      // setDocuments(prevDocuments => prevDocuments.filter(doc => doc.id !== id));
       getDocumentsForCurrentUser(userId);
       console.log(`Document with ID ${id} deleted successfully.`);
     } catch (error) {
       console.error(`Error deleting document with ID ${id}:`, error);
     }
   }
-
-  // Dimensions on iphone SE = 375 x 667
 
   return (
     <View style={{ ...styles.appContainer, width, height }}>

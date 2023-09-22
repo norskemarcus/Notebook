@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Pressable, Image } from 'react-native';
+import { View, Text, TextInput, Pressable, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '../styles';
 import { db, storage } from '../firebase/config.jsx';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
 import { useFocusEffect } from '@react-navigation/native';
-
 
 export default function Page2({ navigation, route }) {
   const [document] = useState(route.params?.document || {});
@@ -42,46 +41,40 @@ export default function Page2({ navigation, route }) {
       }
     }, [document])
   );
+
+  async function retrieveImageURL() {
+    try {
+      const notebookDocRef = doc(db, 'notebook_doc', documentId);
+      const docSnapshot = await getDoc(notebookDocRef);
+
+      if (docSnapshot.exists()) {
+        const imageURL = docSnapshot.data().imageURL;
+        setImageURL(imageURL);
+      } else {
+        // If no document exists, check for an existing image
+        checkImageInStorage();
+      }
+    } catch (error) {
+      console.error('Error retrieving image URL from Firestore:', error);
+    }
+  }
   
+  async function checkImageInStorage() {
+    try {
+      const storageRef = storage;
+      const imagePath = `images/${documentId}.jpg`;
+      const metadata = await getMetadata(ref(storageRef, imagePath));
 
-
-
-
-
-    async function retrieveImageURL() {
-      try {
-        const notebookDocRef = doc(db, 'notebook_doc', documentId);
-        const docSnapshot = await getDoc(notebookDocRef);
-
-        if (docSnapshot.exists()) {
-          const imageURL = docSnapshot.data().imageURL;
-          setImageURL(imageURL);
-        } else {
-          // If no document exists, check for an existing image
-          checkImageInStorage();
-        }
-      } catch (error) {
-        console.error('Error retrieving image URL from Firestore:', error);
+      if (metadata.size > 0) {
+        const fullImageURL = await getDownloadURL(ref(storageRef, imagePath));
+        setImageURL(fullImageURL);
+      } else {
+        setImageURL(null);
       }
+    } catch (error) {
+      console.error('Error checking for image:', error);
     }
-    
-    async function checkImageInStorage() {
-      try {
-        const storageRef = storage;
-        const imagePath = `images/${documentId}.jpg`;
-        const metadata = await getMetadata(ref(storageRef, imagePath));
-
-        if (metadata.size > 0) {
-          const fullImageURL = await getDownloadURL(ref(storageRef, imagePath));
-          setImageURL(fullImageURL);
-        } else {
-          setImageURL(null);
-        }
-      } catch (error) {
-        console.error('Error checking for image:', error);
-      }
-    }
- 
+  }
 
   const renderImage = () => {
     if (imageURL) {
@@ -91,8 +84,17 @@ export default function Page2({ navigation, route }) {
           style={styles.centeredImage}
         />
       );
+    } else {
+      return (
+        <Pressable
+          style={styles.imagePlaceholder}
+          onPress={goToImageUpload}
+        >
+          <Icon name="camera" size={48} color="#50a182" /> 
+          <Text style={styles.imagePlaceholderText}>Add an image</Text>
+        </Pressable>
+      );
     }
-    return null;
   };
 
   const handleEdit = () => {
@@ -130,8 +132,11 @@ export default function Page2({ navigation, route }) {
   };
 
   return (
-    <View style={styles.appContainer}>
+    <ScrollView style={styles.appContainer}>
       <View style={styles.headerContainer}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>{title}</Text>
+        </View>
         <Pressable
           onPress={handleEdit}
           style={styles.editIcon}
@@ -142,19 +147,9 @@ export default function Page2({ navigation, route }) {
             color='#3079d1'
           />
         </Pressable>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>{title}</Text>
-        </View>
       </View>
 
       <View style={styles.contentContainer}>
-        <Pressable
-          onPress={goToImageUpload}
-          style={styles.uploadButton}
-        >
-          <Text style={styles.buttonText}>Upload an image</Text>
-        </Pressable>
-
         {isEditMode && (
           <View>
             <TextInput
@@ -184,11 +179,21 @@ export default function Page2({ navigation, route }) {
             </View>
           </View>
         )}
-        {!isEditMode && <Text style={[styles.contentText, styles.centerContentText]}>{content}</Text>}
+        {!isEditMode && (
+          <ScrollView style={styles.scrollableTextContainer}>
+            <Text style={[styles.contentText, styles.centerContentText]}>{content}</Text>
+          </ScrollView>
+        )}
         <View style={styles.imageContainer}>
           {renderImage()}
+          <Pressable
+            onPress={goToImageUpload}
+            style={styles.changePictureButton} 
+          >
+            <Icon name="camera" size={20} color="white" /> 
+          </Pressable>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }

@@ -1,10 +1,10 @@
 import axios from 'axios'; // npm install axios
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, TextInput, Text, Pressable } from 'react-native';
-import { Alert } from 'react-native';
-import { apiKey, auth as firebaseAuth } from '../firebase/config.jsx';
+//import { apiKey, auth as firebaseAuth } from '../firebase/config.jsx';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useIsFocused } from '@react-navigation/native';
 
 const API_KEY = 'AIzaSyA7txWcuaoBoYcSpqTf4l3nKfiiV0C1BYs';
 const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
@@ -14,29 +14,40 @@ export default function LoginPage({ navigation }) {
   const [email, setEmail] = useState('user@gmail.com');
   const [password, setPassword] = useState('rewrewrew');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
+
+
+  // Use useIsFocused to track screen focus
+  const isFocused = useIsFocused();
+
+  // Reset error state when the screen is focused
+  useEffect(() => {
+    if (isFocused) {
+      setError(null);
+    }
+  }, [isFocused]);
+
+
 
   async function login() {
-    const auth = getAuth;
-
+    
+  
     try {
       const auth = getAuth();
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      /* const response = await axios.post(url + API_KEY, {
-        email: email,
-        password: password,
-        returnSecureToken: true,
-      }); */
-      // response.data.idToken
+      
       if (user) {
         console.log('Login success:', user);
-
         navigation.navigate('Page1', { userId: user.uid });
       } else {
-        console.error('Unexpected login response:', user);
+        setError('Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Error:', error);
+      setError('Login failed. Please check your username and password.');
+      setEmail(''); 
+      setPassword(''); 
+
     }
   }
 
@@ -83,6 +94,7 @@ export default function LoginPage({ navigation }) {
         >
           <Text style={styles.buttonText}>Login</Text>
         </Pressable>
+        {error && <Text style={{color: "red", marginTop: 10}}>{error}</Text>}
       </View>
       <Text style={styles.signupText}>Don't have an account?</Text>
       <Pressable
