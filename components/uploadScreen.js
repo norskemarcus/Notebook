@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Pressable, SafeAreaView, Image, snapshot } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -9,11 +9,17 @@ import { storage } from '../firebase/config.jsx';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { updateDoc, doc } from 'firebase/firestore';
 
+
+
+
+
 const UploadScreen = ({ route }) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const { navigation } = route.params; // Receive the navigation prop
   const { documentId } = route.params;
+ 
+
 
   const pickImage = async () => {
     try {
@@ -101,8 +107,15 @@ const UploadScreen = ({ route }) => {
         style={styles.selectButton}
         onPress={pickImage}
       >
-        <Text style={styles.buttonText}>Pick an Image</Text>
+        <Text style={styles.buttonText}>Image from docs</Text>
       </Pressable>
+
+      <Pressable
+        style={styles.useCameraButton}
+      >
+        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraScreen", {documentId: documentId})}>Use camera</Text>
+      </Pressable>
+    
 
       <View style={styles.imageContainer}>
         {image && (

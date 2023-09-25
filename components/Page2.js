@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '../styles';
 import { db, storage } from '../firebase/config.jsx';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
-import { getDownloadURL, ref, getMetadata } from 'firebase/storage';
+import { getDownloadURL, ref, getMetadata, deleteObject } from 'firebase/storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Page2({ navigation, route }) {
@@ -57,7 +57,8 @@ export default function Page2({ navigation, route }) {
         //setIsImageAvailable(true); 
       } else {
         // If no document exists, check for an existing image
-        checkImageInStorage();
+      //  checkImageInStorage();
+      setImageURL(null);
       }
     } catch (error) {
       console.error('Error retrieving image URL from Firestore:', error);
@@ -73,10 +74,8 @@ export default function Page2({ navigation, route }) {
       if (metadata.size > 0) {
         const fullImageURL = await getDownloadURL(ref(storageRef, imagePath));
         setImageURL(fullImageURL);
-        //setIsImageAvailable(true);
       } else {
         setImageURL(null);
-       // setIsImageAvailable(false); 
       }
     } catch (error) {
       console.error('Error checking for image:', error);
@@ -141,18 +140,18 @@ export default function Page2({ navigation, route }) {
 
   const handleDeleteImage = async () => {
     try {
-      const storageRef = storage;
-      const imagePath = `images/${documentId}.jpg`;
-  
-      // Delete the image from Firebase Storage
-      await storageRef.deleteObject(imagePath);
+      const storageRef = ref(storage, `images/${documentId}.jpg`); // Get a reference to the image
+      await deleteObject(storageRef); // Delete the image from Firebase Storage
+
+      //const imagePath = `images/${documentId}.jpg`;
   
       // Update Firestore to remove the image URL
       const notebookDocRef = doc(db, 'notebook_doc', documentId);
       await updateDoc(notebookDocRef, { imageURL: null });
-  
+
       setImageURL(null);
   
+      // Info to the user should come here! Picture is not being deleted
     
       console.log('Image deleted successfully.');
     } catch (error) {
@@ -176,13 +175,6 @@ export default function Page2({ navigation, route }) {
             color='#3079d1'
           />
         </Pressable>
-     
-      <Pressable
-        onPress={goToImageUpload}
-        style={styles.changePictureButton}
-      >
-        <Icon name="camera" size={20} color="white" />
-      </Pressable>
     
       </View>
 
@@ -214,6 +206,21 @@ export default function Page2({ navigation, route }) {
                 <Text style={styles.buttonText}>Cancel</Text>
               </Pressable>
             </View>
+            <View style={styles.iconsContainer}>
+            <Pressable
+              onPress={goToImageUpload}
+              style={styles.changePictureButton}
+            >
+              <Icon name="camera" size={20} color="black" />
+            </Pressable>
+            <Pressable
+            onPress={handleDeleteImage}
+            style={styles.deleteImageButton}
+          >
+            <Icon name="trash" size={20} color="red" /> 
+          </Pressable>
+          </View>
+    
           </View>
         )}
         {!isEditMode && (
@@ -223,14 +230,7 @@ export default function Page2({ navigation, route }) {
         )}
      <View style={styles.imageContainer}>
         {renderImage()}
-        {imageURL && (
-          <Pressable
-            onPress={handleDeleteImage}
-            style={styles.deleteImageButton}
-          >
-            <Icon name="trash" size={20} color="#fff" /> 
-          </Pressable>
-        )}
+       
       </View>
     </View>
   </ScrollView>

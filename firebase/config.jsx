@@ -5,6 +5,14 @@ import { getAuth } from 'firebase/auth';
 // import 'firebase/compat/storage'
 import { getStorage } from 'firebase/storage';
 
+// se på dette senere:
+/* import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+}); */
 
 //import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 //import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';

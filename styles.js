@@ -102,6 +102,11 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     marginHorizontal: 10,
   },
+  iconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
   buttonText: {
     color: 'black',
     fontSize: 16,
@@ -164,11 +169,33 @@ export const styles = StyleSheet.create({
     backgroundColor: '#4e7ecc',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 10
   },
+  useCameraButton: {
+    borderRadius: 5,
+    width: 150,
+    height: 50,
+    backgroundColor: 'grey',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 10
+  },
+  cameraButton: {
+    backgroundColor: 'transparent',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50, 
+    width: 64,      
+    height: 64,
+  },
+
   buttonText: {
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  space: {
+    flex : 1
   },
   uploadedImage: {
     width: 200, // Adjust the width as needed
@@ -186,7 +213,7 @@ export const styles = StyleSheet.create({
   },
   imageContainer: {
     marginTop: 30,
-    marginBottom: 5,
+    marginBottom: 20,
     alignItems: 'center',
   },
   centeredImage: {
@@ -215,4 +242,17 @@ export const styles = StyleSheet.create({
     backgroundColor: 'transparent', 
     padding: 5, 
   },
+  cameraContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  buttonContainerCamera: {
+    backgroundColor: '#fff',
+    alignSelf: 'flex-end',
+  },
+  preview: {
+    flex: 1,
+    alignSelf: 'stretch'
+  }
 });

@@ -8,6 +8,7 @@ import SignUp from './components/signupPage.js';
 import Page1 from './components/Page1.js';
 import Page2 from './components/Page2.js';
 import UploadScreen from './components/uploadScreen.js';
+import CameraScreen from './components/camera.js'; 
 
 
 const Stack = createNativeStackNavigator();
@@ -61,6 +62,12 @@ export default function App() {
           name='UploadScreen'
           component={UploadScreen}
           options={{ title: 'Upload Screen' }}
+        />
+        
+        <Stack.Screen
+          name='CameraScreen'
+          component={CameraScreen}
+          options={{ title:  'Camera' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

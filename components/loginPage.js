@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useIsFocused } from '@react-navigation/native';
 
+
 const API_KEY = 'AIzaSyA7txWcuaoBoYcSpqTf4l3nKfiiV0C1BYs';
 const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
 
