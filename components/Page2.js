@@ -16,7 +16,8 @@ export default function Page2({ navigation, route }) {
   const [initialTitle, setInitialTitle] = useState(document?.title || '');
   const [imageURL, setImageURL] = useState(null);
   const [forceRender, setForceRender] = useState(false);
-  //const [isImageAvailable, setIsImageAvailable] = useState(false);   // state variable to track whether an image is available
+  const [newImageURL, setNewImageURL] = useState(null);
+  const [isMirrored, setIsMirrored] = useState(false);
 
 
   useEffect(() => {
@@ -52,9 +53,9 @@ export default function Page2({ navigation, route }) {
       const docSnapshot = await getDoc(notebookDocRef);
 
       if (docSnapshot.exists()) {
-        const imageURL = docSnapshot.data().imageURL;
+        const imageURL = docSnapshot.data().imageURL || newImageURL; ;
         setImageURL(imageURL);
-        //setIsImageAvailable(true); 
+      
       } else {
         // If no document exists, check for an existing image
       //  checkImageInStorage();
@@ -83,16 +84,23 @@ export default function Page2({ navigation, route }) {
   }
 
   const renderImage = () => {
-    if (imageURL) {
+    if (newImageURL) {
       return (
         <Image
-          source={{ uri: imageURL }}
+          source={{ uri: newImageURL }}  // Use newImageURL if available
           style={styles.centeredImage}
         />
       );
-    } else {
+    } else if (imageURL){
       return (
-        <Pressable
+        <Image
+          source={{ uri: imageURL }} // Use imageURL as fallback
+          style={styles.centeredImage}
+        />
+      )
+      } else {
+        return (
+           <Pressable
           style={styles.imagePlaceholder}
           onPress={goToImageUpload}
         >
@@ -100,6 +108,7 @@ export default function Page2({ navigation, route }) {
           <Text style={styles.imagePlaceholderText}>Add an image</Text>
         </Pressable>
       );
+  
     }
   };
 
@@ -157,6 +166,11 @@ export default function Page2({ navigation, route }) {
     } catch (error) {
       console.error('Error deleting image:', error);
     }
+  };
+
+
+  const handleToggleMirror = () => {
+    setIsMirrored(!isMirrored);
   };
 
   return (
