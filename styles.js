@@ -180,14 +180,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 10
   },
-  cameraButton: {
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 50, 
-    width: 64,      
-    height: 64,
-  },
+  // cameraButton: {
+  //   backgroundColor: 'transparent',
+  //   alignItems: 'center',
+  //   justifyContent: 'center',
+  //   borderRadius: 50, 
+  //   width: 64,      
+  //   height: 64,
+  // },
 
   buttonText: {
     color: 'black',
@@ -195,7 +195,8 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   space: {
-    flex : 1
+    flex : 1,
+    marginTop: 60
   },
   uploadedImage: {
     width: 200, // Adjust the width as needed

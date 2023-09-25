@@ -7,15 +7,18 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase/config.jsx';
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/config.jsx';
+//import * as ImageManipulator from 'react-native-image-manipulator'; 
+
 
 
 const CameraScreen = ({ route, navigation }) => {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [photo, setPhoto] = useState();
   const { documentId } = route.params;
-
   const [uploading, setUploading] = useState(false); // New state for tracking upload progress
   const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress percentage
+  //const [isMirrored, setIsMirrored] = useState(false);
+
 
   let cameraRef = useRef();
 
@@ -118,15 +121,37 @@ const CameraScreen = ({ route, navigation }) => {
               <Text>Uploading... {uploadProgress.toFixed(2)}%</Text>
             </SafeAreaView>
           );
-        }
+    }
 
+
+    // const handleToggleMirror = () => {
+    //   setIsMirrored(!isMirrored);
+    // };
+  
+
+    // Function to mirror the image
+    // const mirrorImage = async (uri) => {
+    //   if (!isMirrored) {
+    //     return uri; // Return the original image if not mirrored
+    //   }
+  
+    //   try {
+    //     const manipResult = await ImageManipulator.manipulateAsync(
+    //       uri,
+    //       [{ flip: ImageManipulator.FlipType.Horizontal }] // Flip the image horizontally
+    //     );
+    //     return manipResult.uri;
+    //   } catch (error) {
+    //     console.error('Error mirroring image:', error);
+    //     return uri; // Return the original image in case of an error
+    //   }
+    // };
 
 
 
     return (
       <SafeAreaView style={styles.container}>
         <Image style={styles.preview} source={{ uri: `data:image/jpg;base64:${photo.base64}` }} />
-       
         {cameraPermission && (
           <Pressable onPress={savePhoto} style={styles.button}>
             <Text style={styles.buttonText}>Save</Text>
@@ -142,7 +167,7 @@ const CameraScreen = ({ route, navigation }) => {
   return (
     <Camera style={styles.imageContainer} ref={cameraRef} ratio="16:9">
       <View style={styles.space}>
-        <Pressable onPress={takePic} style={[styles.cameraButton, { marginTop: 20 }]}>
+        <Pressable onPress={takePic} style={styles.cameraButton}>
         <Icon name="camera" size={32} color="white" />
         </Pressable>
       </View>

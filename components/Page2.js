@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Pressable, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from '../styles';
-import { db, storage } from '../firebase/config.jsx';
+import { db, storage, auth } from '../firebase/config.jsx';
 import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import { getDownloadURL, ref, getMetadata, deleteObject } from 'firebase/storage';
 import { useFocusEffect } from '@react-navigation/native';
@@ -17,7 +17,9 @@ export default function Page2({ navigation, route }) {
   const [imageURL, setImageURL] = useState(null);
   const [forceRender, setForceRender] = useState(false);
   const [newImageURL, setNewImageURL] = useState(null);
-  const [isMirrored, setIsMirrored] = useState(false);
+  // Hvorfor bruge denne og ikke userId??
+  // FIKSE DETTE SENERE!!!!!
+  //const { user } = useAuth();
 
 
   useEffect(() => {
@@ -124,11 +126,15 @@ export default function Page2({ navigation, route }) {
     setIsEditMode(false);
 
     const documentData = {
-      userId: userId,
       title: title,
       content: content,
       createdAt: new Date().toISOString(),
     };
+
+    // Check if userId is defined and not empty
+    if (userId) {
+      documentData.userId = userId; // Add userId to documentData
+    }
 
     const notebookDocRef = doc(db, 'notebook_doc', documentId);
 
@@ -169,9 +175,6 @@ export default function Page2({ navigation, route }) {
   };
 
 
-  const handleToggleMirror = () => {
-    setIsMirrored(!isMirrored);
-  };
 
   return (
     <ScrollView style={styles.appContainer}>
