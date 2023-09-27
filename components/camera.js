@@ -17,18 +17,30 @@ const CameraScreen = ({ route, navigation }) => {
   const { documentId } = route.params;
   const [uploading, setUploading] = useState(false); // New state for tracking upload progress
   const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress percentage
-  //const [isMirrored, setIsMirrored] = useState(false);
-
+  
 
   let cameraRef = useRef();
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const cameraPermission = await Camera.requestCameraPermissionsAsync();
+    
+  //   })();
+  // }, []);
+
   useEffect(() => {
     (async () => {
-      const cameraPermission = await Camera.requestCameraPermissionsAsync();
-      setCameraPermission(cameraPermission.status === 'granted');
-  
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      if (status === 'granted') {
+        setCameraPermission(true);
+        //setCameraPermission(cameraPermission.status === 'granted');
+      } else {
+        
+        console.log('Camera permission denied');
+      }
     })();
   }, []);
+
 
   if (cameraPermission === undefined) {
     return <Text>Requesting permissions...</Text>;
@@ -124,30 +136,6 @@ const CameraScreen = ({ route, navigation }) => {
     }
 
 
-    // const handleToggleMirror = () => {
-    //   setIsMirrored(!isMirrored);
-    // };
-  
-
-    // Function to mirror the image
-    // const mirrorImage = async (uri) => {
-    //   if (!isMirrored) {
-    //     return uri; // Return the original image if not mirrored
-    //   }
-  
-    //   try {
-    //     const manipResult = await ImageManipulator.manipulateAsync(
-    //       uri,
-    //       [{ flip: ImageManipulator.FlipType.Horizontal }] // Flip the image horizontally
-    //     );
-    //     return manipResult.uri;
-    //   } catch (error) {
-    //     console.error('Error mirroring image:', error);
-    //     return uri; // Return the original image in case of an error
-    //   }
-    // };
-
-
 
     return (
       <SafeAreaView style={styles.container}>
@@ -165,9 +153,9 @@ const CameraScreen = ({ route, navigation }) => {
   }
 
   return (
-    <Camera style={styles.imageContainer} ref={cameraRef} ratio="16:9">
+    <Camera style={styles.imageContainer} ref={cameraRef} ratio={'1:1'}>
       <View style={styles.space}>
-        <Pressable onPress={takePic} style={styles.cameraButton}>
+        <Pressable onPress={takePic}>
         <Icon name="camera" size={32} color="white" />
         </Pressable>
       </View>

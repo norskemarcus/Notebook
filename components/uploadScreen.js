@@ -113,7 +113,13 @@ const UploadScreen = ({ route }) => {
       <Pressable
         style={styles.useCameraButton}
       >
-        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraScreen", {documentId: documentId})}>Use camera</Text>
+        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraScreen", {documentId: documentId})}>Use camera on PC</Text>
+      </Pressable>
+    
+      <Pressable
+        style={styles.useCameraButton}
+      >
+        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraMobile", {documentId: documentId})}>Use camera mobile</Text>
       </Pressable>
     
 

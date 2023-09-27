@@ -9,7 +9,7 @@ import Page1 from './components/Page1.js';
 import Page2 from './components/Page2.js';
 import UploadScreen from './components/uploadScreen.js';
 import CameraScreen from './components/camera.js'; 
-
+import CameraMobile from './components/cameraMobile.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,6 +69,12 @@ export default function App() {
           component={CameraScreen}
           options={{ title:  'Camera' }}
         />
+         <Stack.Screen
+          name='CameraMobile'
+          component={CameraMobile}
+          options={{ title:  'Camera Mobile' }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
