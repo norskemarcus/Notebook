@@ -3,7 +3,7 @@ import { StyleSheet, View, TextInput, Text, Pressable, ActivityIndicator } from 
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 export default function SignUp({ navigation }) {
-  const [email, setEmail] = useState('marcus@gmail.com');
+  const [email, setEmail] = useState('test@gmail.com');
   const [password, setPassword] = useState('E12345b');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState(null); 
@@ -42,6 +42,7 @@ export default function SignUp({ navigation }) {
   }
   return (
     <View style={styles.container}>
+       <View style={styles.formContainer}>
       <TextInput
         value={email}
         onChangeText={text => setEmail(text)}
@@ -70,6 +71,7 @@ export default function SignUp({ navigation }) {
       {error && <Text style={{color: "red", marginTop: 10}}>{error}</Text>}
       {response && <Text style={styles.responseText}>{response}</Text>}
     </View>
+    </View>
   );
 }
 
@@ -78,6 +80,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  formContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
   },
   textBoxes: {
     fontSize: 18,

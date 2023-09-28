@@ -9,12 +9,13 @@ import { addDoc, collection, where, query, getDocs, deleteDoc, doc } from 'fireb
 
 const { width, height } = Dimensions.get('window'); 
 
-export default function Page1({ navigation, route }) {
-  const [titleInput, setTitleInput] = useState('');
+
+export default function Page1({ navigation, route }) { // using the navigation object, component of navigation stack
+  const [titleInput, setTitleInput] = useState(''); // state variables using the useState hook to manage the app's data
   const [documents, setDocuments] = useState([]);
   const [userId, setUserId] = useState(null);
 
-
+  //  useEffect hooks to handle various side effects, such as updating the documents list when the user logs in or when documents are added or edited.
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged(user => {
       if (user) {
@@ -178,6 +179,7 @@ export default function Page1({ navigation, route }) {
                     name='trash'
                     size={24}
                     color='#FF6B6B'
+                    style={styles.trashIcon}
                   />
                 </Pressable>
               </View>
@@ -185,6 +187,7 @@ export default function Page1({ navigation, route }) {
           </View>
         )}
         keyExtractor={item => item.id}
+        style={styles.flatList}
       />
     </View>
   );

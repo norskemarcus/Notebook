@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, Pressable, SafeAreaView, Image, snapshot } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import * as FileSystem from 'expo-file-system';
 import { db } from '../firebase/config.jsx';
 import { styles } from '../styles';
@@ -117,9 +118,9 @@ const UploadScreen = ({ route }) => {
       </Pressable>
     
       <Pressable
-        style={styles.useCameraButton}
+        style={styles.useCameraMobileButton}
       >
-        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraMobile", {documentId: documentId})}>Use camera mobile</Text>
+        <Text style={styles.buttonText} onPress={() => navigation.navigate("CameraMobile", {documentId: documentId})}>Use mobile camera</Text>
       </Pressable>
     
 
@@ -131,10 +132,10 @@ const UploadScreen = ({ route }) => {
           />
         )}
         <Pressable
-          style={styles.uploadButton}
+          style={styles.saveIconButton}
           onPress={uploadImage}
         >
-          <Text style={styles.buttonText}>Upload Image</Text>
+            <Icon name="save" size={24} color="white" />
         </Pressable>
       </View>
     </View>

@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
   appContainer: {
@@ -6,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     paddingTop: 50,
     paddingHorizontal: 16,
-   // justifyContent: 'space-between',
+   
   },
   headerContainer: {
     flexDirection: 'row', 
@@ -30,25 +32,29 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24, //20
+    marginBottom: 24, 
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
     borderBottomColor: '#ececec',
-    paddingHorizontal: 16,
-    width: '100%',
+    paddingHorizontal: 10, // Use a percentage of the screen width
+    width: '100%', // Ensure it takes the full width
   },
   titleInput: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10, // 5
-    paddingHorizontal: 16,
+    marginBottom: 10, 
+    //paddingHorizontal: 16,
+    paddingHorizontal: 0.04 * width,
     borderWidth: 1,
     borderColor: '#ececec',
     borderRadius: 6,
-    padding: 10,
+    //padding: 10,
+    padding: 0.02 * width,
     backgroundColor: 'transparent',
+    width: '70%', // Use a percentage of the input container's width
+
   },
   contentContainer: {
     flex: 1,
@@ -119,6 +125,7 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   goalItem: {
+    width: 'auto',
     marginVertical: 8,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -135,6 +142,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 1, 
+  },
+  trashIcon: {
+    alignSelf: 'flex-end', // Align the trash icon to the right edge
+  },
+  flatList: {
+    flexGrow: 1, // Ensure the FlatList takes available vertical space
   },
   logoutContainer: {
     flex: 1,
@@ -164,35 +178,48 @@ export const styles = StyleSheet.create({
   },
   selectButton: {
     borderRadius: 5,
-    width: 150,
+    width: 200,
     height: 50,
     backgroundColor: '#4e7ecc',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: 20,
+    padding: 10
   },
   useCameraButton: {
     borderRadius: 5,
-    width: 150,
+    width: 200,
     height: 50,
     backgroundColor: 'grey',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: 20,
+    padding: 10
   },
-  // cameraButton: {
-  //   backgroundColor: 'transparent',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  //   borderRadius: 50, 
-  //   width: 64,      
-  //   height: 64,
-  // },
-
+  useCameraMobileButton: {
+    borderRadius: 5,
+    width: 200,
+    height: 50,
+    backgroundColor: '#e28743', 
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    padding: 10
+  },
+  saveIconButton: {
+    borderRadius: 5,
+    width: 50,
+    height: 50,
+    backgroundColor: '#50a182',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10
+  },
   buttonText: {
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center', // Center the text horizontally
   },
   space: {
     flex : 1,

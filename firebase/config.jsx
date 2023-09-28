@@ -6,7 +6,15 @@ import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
 // se på dette senere:
+
+
 /* import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+
+You are initializing Firebase Auth for React Native without providing
+AsyncStorage. Auth state will default to memory persistence and will not
+persist between sessions. In order to persist auth state, install the package
+"@react-native-async-storage/async-storage" and provide it to
+initializeAuth:
 
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
