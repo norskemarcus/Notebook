@@ -7,7 +7,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from '../firebase/config.jsx';
 import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/config.jsx';
-//import * as ImageManipulator from 'react-native-image-manipulator'; 
+
 
 
 
@@ -20,13 +20,6 @@ const CameraScreen = ({ route, navigation }) => {
   
 
   let cameraRef = useRef();
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const cameraPermission = await Camera.requestCameraPermissionsAsync();
-    
-  //   })();
-  // }, []);
 
   useEffect(() => {
     (async () => {
@@ -77,10 +70,10 @@ const CameraScreen = ({ route, navigation }) => {
       try {
         const res = await fetch(photoUri);
         const blob = await res.blob();
-        const storageRef = ref(storage, `images/${documentId}.jpg`); // 'images/' + documentId + '.jpg'
+        const storageRef = ref(storage, `images/${documentId}.jpg`); 
         const uploadTask = uploadBytesResumable(storageRef, blob);
 
-        setUploading(true); // Set uploading to true
+        setUploading(true); 
 
         uploadTask.on(
           'state_changed',
@@ -134,6 +127,7 @@ const CameraScreen = ({ route, navigation }) => {
             </SafeAreaView>
           );
     }
+s
 
 
 

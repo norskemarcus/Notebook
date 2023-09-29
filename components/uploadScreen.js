@@ -14,10 +14,9 @@ import { updateDoc, doc } from 'firebase/firestore';
 
 
 
-const UploadScreen = ({ route }) => {
+const UploadScreen = ({ route, navigation }) => {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const { navigation } = route.params; // Receive the navigation prop
   const { documentId } = route.params;
  
 
@@ -39,7 +38,7 @@ const UploadScreen = ({ route }) => {
         quality: 1,
       });
 
-      if (!result.cancelled && result.assets.length > 0) {
+      if (!result.canceled && result.assets.length > 0) {
         const selectedImageUri = result.assets[0].uri;
         setImage(selectedImageUri);
       } else {

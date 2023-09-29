@@ -17,6 +17,7 @@ export default function Page2({ navigation, route }) {
   const [imageURL, setImageURL] = useState(null);
   const [forceRender, setForceRender] = useState(false);
   const [newImageURL, setNewImageURL] = useState(null);
+
   // Hvorfor bruge denne og ikke userId??
   // FIKSE DETTE SENERE!!!!!
   //const { user } = useAuth();
@@ -119,7 +120,7 @@ export default function Page2({ navigation, route }) {
   };
 
   const goToImageUpload = () => {
-    navigation.navigate('UploadScreen', { documentId, navigation });
+    navigation.navigate('UploadScreen', { documentId });
   };
 
   const handleSaveChanges = async () => {

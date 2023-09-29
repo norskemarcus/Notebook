@@ -6,9 +6,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { useIsFocused } from '@react-navigation/native';
 
-
+// Skal de ligge som globale variabler her?
 const API_KEY = 'AIzaSyA7txWcuaoBoYcSpqTf4l3nKfiiV0C1BYs';
 const url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=';
+
+// Reset password
+// https://notebook-32257.firebaseapp.com/__/auth/action?mode=action&oobCode=code
+// Link to template: https://console.firebase.google.com/project/notebook-32257/authentication/emails 
+
 
 export default function LoginPage({ navigation }) {
   // onLogin
