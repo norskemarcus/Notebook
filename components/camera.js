@@ -9,16 +9,12 @@ import { updateDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase/config.jsx';
 
 
-
-
 const CameraScreen = ({ route, navigation }) => {
   const [cameraPermission, setCameraPermission] = useState(null);
   const [photo, setPhoto] = useState();
   const { documentId } = route.params;
   const [uploading, setUploading] = useState(false); // New state for tracking upload progress
   const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress percentage
-  
-
   let cameraRef = useRef();
 
   useEffect(() => {
@@ -26,7 +22,6 @@ const CameraScreen = ({ route, navigation }) => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       if (status === 'granted') {
         setCameraPermission(true);
-        //setCameraPermission(cameraPermission.status === 'granted');
       } else {
         
         console.log('Camera permission denied');
@@ -57,7 +52,7 @@ const CameraScreen = ({ route, navigation }) => {
   if (photo) {
     let savePhoto = async () => {
       try {
-        // Call the uploadPhoto function to upload the saved photo to Firebase
+        // Upload the saved photo to Firebase
         await uploadPhoto(documentId, photo.uri);
         setPhoto(undefined); // Clear the photo
       } catch (error) {
@@ -80,7 +75,7 @@ const CameraScreen = ({ route, navigation }) => {
           snapshot => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log(`Upload is ${progress}% done`);
-            setUploadProgress(progress); // Update upload progress
+            setUploadProgress(progress); 
 
             if (progress === 100) {
               (async () => {
@@ -118,7 +113,7 @@ const CameraScreen = ({ route, navigation }) => {
     };
     
 
-    // Showing progress on screen
+   //  Showing progress on screen
     if (uploading) {
           return (
             <SafeAreaView style={styles.container}>
@@ -127,8 +122,6 @@ const CameraScreen = ({ route, navigation }) => {
             </SafeAreaView>
           );
     }
-s
-
 
 
     return (

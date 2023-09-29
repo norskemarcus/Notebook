@@ -15,17 +15,12 @@ const CameraMobile = ({ navigation, route }) => {
   const [camera, setCamera] = useState(null);
   const [imageUri, setImageUri] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
-  
-  //const [image, setImage] = useState(null);
   const [photo, setPhoto] = useState();
 
   const [imageSaved, setImageSaved] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress percentage
   
-
-  // Obs behøver ikke denne når man sender navigation med som parameter over
- // const { navigation } = route.params; 
   const { documentId } = route.params;
 
   const permisionFunction = async () => {
@@ -49,10 +44,7 @@ const CameraMobile = ({ navigation, route }) => {
   const takePicture = async () => {
     if (camera) {
       const newPhoto = await camera.takePictureAsync({ skipProcessing: true }); // to speed up on Android devices
-     // setPhoto(newPhoto);
      setImageUri(newPhoto.uri);
-    
-        
     }
   };
 
@@ -139,17 +131,19 @@ const CameraMobile = ({ navigation, route }) => {
           type={type}
           ratio={'1:1'}
         />
-      </View>
-      <Button
-        title={'Take Picture'}
-        onPress={takePicture}
-        disabled={!isCameraReady}
-      />
+         <View style={styles.cameraButtonContainer}>
+            <Pressable onPress={takePicture} style={styles.cameraButton}>
+            <Icon name="camera" size={32} color="white" disabled={!isCameraReady} />
+            </Pressable>
+          </View>
+        
+      </View>      
       {imageUri && (
         <Image
           source={{ uri: imageUri }}
           style={{ flex: 1 }}
         />
+  
       )} 
       {/* "If imageUri has a truthy value (i.e., it's not null, undefined, false, 0, or an empty string), and imageSaved is false, then render the content inside the parentheses." */}
        {imageUri && !imageSaved && (
@@ -157,10 +151,7 @@ const CameraMobile = ({ navigation, route }) => {
         <Text style={styles.buttonText}>Save</Text>
       </Pressable>
     )}
-    
-   
   </View>
-   
   );
 }
 
@@ -176,20 +167,24 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
   },
+  cameraButtonContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cameraButton: {
+    padding: 10,
+  },
   button: {
     flex: 0.1,
     padding: 10,
-    alignSelf: 'flex-end',
+    alignSelf: 'center',
     alignItems: 'center',
   },
 });
 
 
 export default CameraMobile;
-
-
-// {imageSaved && (
-//   <Pressable>
-//     <Icon name="check-circle" size={32} color="green" />
-//   </Pressable>
-// )}
